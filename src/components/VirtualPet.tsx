@@ -6,6 +6,7 @@ import { Heart, Star, Award } from 'lucide-react';
 import idle from '../assets/sprites/Idle.png'
 import feed from '../assets/sprites/feed1.png'
 import eat from '../assets/sprites/eat.png'
+import happy from '../assets/sprites/happy.png'
 // import AnimatedSprite from './AnimatedSprite';
 
 export const VirtualPet: React.FC = () => {
@@ -18,6 +19,7 @@ export const VirtualPet: React.FC = () => {
   const [isPetting, setIsPetting] = useState(false);
   const [frame, setFrame] = useState(0);
   const [animationUrl,setAnimationUrl]=useState(idle) ; // default animation
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setFrame((prev) => (prev + 1) % frameCount);
@@ -39,11 +41,15 @@ export const VirtualPet: React.FC = () => {
     petDog();
     setAnimationUrl(eat);
     setTimeout(() => {
-      setIsPetting(false);
-      setAnimationUrl(idle); // reset to idle after petting
+      setAnimationUrl(happy); // reset to idle after petting
       // Optionally, you can also reset the frame to 0 if neede
     }
     , 3000);
+    setTimeout(() => {
+      setIsPetting(false);
+      setAnimationUrl(idle); // reset to idle after petting
+    }, 4000); // reset isPetting after 4 seconds
+
   };
 
   // const getDogEmoji = () => {
