@@ -5,7 +5,7 @@ import { Heart, Star, Award } from 'lucide-react';
 
 import idle from '../assets/sprites/Idle.png'
 import feed from '../assets/sprites/feed1.png'
-import AnimatedSprite from './AnimatedSprite';
+// import AnimatedSprite from './AnimatedSprite';
 
 export const VirtualPet: React.FC = () => {
 
@@ -39,15 +39,15 @@ export const VirtualPet: React.FC = () => {
     setTimeout(() => setIsPetting(false), 1000);
   };
 
-  const getDogEmoji = () => {
-    switch (pet.mood) {
-      case 'excited': return '🐕‍🦺';
-      case 'happy': return '🐶';
-      case 'content': return '🐕';
-      case 'tired': return '😴';
-      default: return '🐕';
-    }
-  };
+  // const getDogEmoji = () => {
+  //   switch (pet.mood) {
+  //     case 'excited': return '🐕‍🦺';
+  //     case 'happy': return '🐶';
+  //     case 'content': return '🐕';
+  //     case 'tired': return '😴';
+  //     default: return '🐕';
+  //   }
+  // };
 
   const getMoodColor = () => {
     switch (pet.mood) {
