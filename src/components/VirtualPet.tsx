@@ -5,6 +5,7 @@ import { Heart, Star, Award } from 'lucide-react';
 
 import idle from '../assets/sprites/Idle.png'
 import feed from '../assets/sprites/feed1.png'
+import eat from '../assets/sprites/eat.png'
 // import AnimatedSprite from './AnimatedSprite';
 
 export const VirtualPet: React.FC = () => {
@@ -36,7 +37,13 @@ export const VirtualPet: React.FC = () => {
   const handlePet = () => {
     setIsPetting(true);
     petDog();
-    setTimeout(() => setIsPetting(false), 1000);
+    setAnimationUrl(eat);
+    setTimeout(() => {
+      setIsPetting(false);
+      setAnimationUrl(idle); // reset to idle after petting
+      // Optionally, you can also reset the frame to 0 if neede
+    }
+    , 3000);
   };
 
   // const getDogEmoji = () => {
@@ -56,6 +63,19 @@ export const VirtualPet: React.FC = () => {
       case 'content': return 'text-blue-500';
       case 'tired': return 'text-gray-500';
       default: return 'text-gray-600';
+    }
+  };
+
+  const animationUpdate = () => {
+    if (!isPetting) {
+      setAnimationUrl(feed);
+    }
+  
+  };
+
+  const hoverAnimation = () => {
+    if (!isPetting) {
+      setAnimationUrl(idle);
     }
   };
 
@@ -86,7 +106,7 @@ export const VirtualPet: React.FC = () => {
           }`}
           onClick={handlePet}
         >
-          <div style={spriteStyle} onMouseEnter={()=>{setAnimationUrl(feed)}} onMouseLeave={()=>{setAnimationUrl(idle)}} className="mx-auto scale-[2.3]" />
+          <div style={spriteStyle} onMouseEnter={animationUpdate} onMouseLeave={hoverAnimation} className="mx-auto scale-[2.3]" />
           {/* <AnimatedSprite animation={isPetting ? 'excited' : 'idle'} /> */}
         </div>
 
