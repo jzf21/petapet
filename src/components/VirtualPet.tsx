@@ -95,6 +95,13 @@ export const VirtualPet: React.FC = () => {
     }
   };
 
+  function updatePetname(newName: string) {
+    // This function can be used to update the pet's name if needed
+    // For now, we will just log the new name
+    pet.name = newName; // Update the pet's name
+    console.log(`Pet name updated to: ${newName}`);
+  }
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 border">
       <div className="text-center">
@@ -103,7 +110,17 @@ export const VirtualPet: React.FC = () => {
             <Star className="w-5 h-5 text-yellow-500" />
             <span className="font-semibold text-gray-800">Level {pet.level}</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">{pet.name}</h2>
+            <div className="flex items-center justify-center mb-2">
+            <h2 className="text-2xl font-bold text-gray-800">{pet.name}</h2>
+            <button 
+             
+              className="ml-2 p-1 text-gray-400 hover:text-gray-700 rounded-full hover:bg-gray-100"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+            </div>
         </div>
 
         <div 

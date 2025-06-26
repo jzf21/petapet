@@ -7,7 +7,7 @@ interface AppContextType {
   pet: Pet;
   stats: UserStats;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string, petname:string) => Promise<boolean>;
   logout: () => void;
   addTask: (title: string, description?: string) => void;
   completeTask: (taskId: string) => void;
@@ -53,17 +53,21 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   useEffect(() => {
     const savedUser = localStorage.getItem('pettask_user');
     const savedTasks = localStorage.getItem('pettask_tasks');
-    const savedPet = localStorage.getItem('pettask_pet');
     const savedStats = localStorage.getItem('pettask_stats');
 
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      const parsedUser = JSON.parse(savedUser);
+      setUser(parsedUser);
+      
+      // Load user-specific pet data
+      const userPetKey = `pettask_pet_${parsedUser.id}`;
+      const savedPet = localStorage.getItem(userPetKey);
+      if (savedPet) {
+        setPet(JSON.parse(savedPet));
+      }
     }
     if (savedTasks) {
       setTasks(JSON.parse(savedTasks));
-    }
-    if (savedPet) {
-      setPet(JSON.parse(savedPet));
     }
     if (savedStats) {
       setStats(JSON.parse(savedStats));
@@ -82,8 +86,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }, [tasks]);
 
   useEffect(() => {
-    localStorage.setItem('pettask_pet', JSON.stringify(pet));
-  }, [pet]);
+    if (user) {
+      const userPetKey = `pettask_pet_${user.id}`;
+      localStorage.setItem(userPetKey, JSON.stringify(pet));
+    }
+  }, [pet, user]);
 
   useEffect(() => {
     localStorage.setItem('pettask_stats', JSON.stringify(stats));
@@ -94,20 +101,29 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const login = async (email: string, password: string): Promise<boolean> => {
     // Simple mock authentication
     const users = JSON.parse(localStorage.getItem('pettask_users') || '[]');
-    const foundUser = users.find((u: any) => u.email === email && u.password === password);
+    const foundUser = users.find((u: { email: string; password: string }) => u.email === email && u.password === password);
     
     if (foundUser) {
+      const userPetKey = `pettask_pet_${foundUser.id}`;
+      const savedPet = JSON.parse(localStorage.getItem(userPetKey) || JSON.stringify({
+        name: foundUser.petname || 'Buddy',
+        mood: 'neutral',
+        petsCount: 0,
+        level: 1
+      }));
+      
       setUser({ id: foundUser.id, email: foundUser.email, name: foundUser.name, createdAt: foundUser.createdAt });
+      setPet(savedPet);
       return true;
     }
     return false;
   };
 
-  const register = async (name: string, email: string, password: string): Promise<boolean> => {
+  const register = async (name: string, email: string, password: string, petname: string): Promise<boolean> => {
     const users = JSON.parse(localStorage.getItem('pettask_users') || '[]');
     
     // Check if user already exists
-    if (users.find((u: any) => u.email === email)) {
+    if (users.find((u: { email: string }) => u.email === email)) {
       return false;
     }
 
@@ -116,13 +132,21 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       name,
       email,
       password,
-      createdAt: new Date()
+      createdAt: new Date(),
+      petname
     };
 
     users.push(newUser);
     localStorage.setItem('pettask_users', JSON.stringify(users));
     
+    // Store pet data with user-specific key
+    const userPetKey = `pettask_pet_${newUser.id}`;
+    const newPet: Pet = { name: petname, mood: 'neutral', petsCount: 0, level: 1 };
+    localStorage.setItem(userPetKey, JSON.stringify(newPet));
+    
     setUser({ id: newUser.id, email: newUser.email, name: newUser.name, createdAt: newUser.createdAt });
+    setPet(newPet);
+    
     return true;
   };
 
