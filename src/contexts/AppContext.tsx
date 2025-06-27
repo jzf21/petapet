@@ -45,7 +45,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     completedTasks: 0,
     totalPets: 0,
     currentStreak: 0,
-    longestStreak: 0
+    longestStreak: 0,
+    fish:0
   });
   const [showTaskCompleteAnimation, setShowTaskCompleteAnimation] = useState(false);
 
@@ -183,6 +184,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }));
 
     setShowTaskCompleteAnimation(true);
+    setStats(prev => ({ ...prev, fish: prev.fish + 1 })); // Increment fish count
     setTimeout(() => setShowTaskCompleteAnimation(false), 2000);
   };
 
@@ -191,6 +193,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   };
 
   const petDog = () => {
+    if(stats.fish < 1) {
+      alert("You need at least 1 fish to pet your dog!");
+      return;
+    }
+    setStats(prev => ({ ...prev, fish: prev.fish - 1 })); // Decrement fish count
     setPet(prev => {
       const newPetsCount = prev.petsCount + 1;
       let newMood: Pet['mood'] = 'content';

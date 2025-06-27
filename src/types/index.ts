@@ -28,4 +28,5 @@ export interface UserStats {
   totalPets: number;
   currentStreak: number;
   longestStreak: number;
+  fish:number;
 }

@@ -5,6 +5,7 @@ import { TaskList } from './TaskList';
 import { VirtualPet } from './VirtualPet';
 import { Stats } from './Stats';
 import { TaskCompleteAnimation } from './TaskCompleteAnimation';
+import DraggableFish from './DraggableFish';
 
 export const Dashboard: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ export const Dashboard: React.FC = () => {
           <div className="lg:col-span-2 space-y-6 order-2 lg:order-1">
             <TaskInput />
             <TaskList />
+            <DraggableFish/>
           </div>
 
           {/* Right Column - Pet & Stats */}
