@@ -18,7 +18,7 @@ export const Dashboard: React.FC = () => {
           <div className="lg:col-span-2 space-y-6 order-2 lg:order-1">
             <TaskInput />
             <TaskList />
-            <DraggableFish/>
+         
           </div>
 
           {/* Right Column - Pet & Stats */}

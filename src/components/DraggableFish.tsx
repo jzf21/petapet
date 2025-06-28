@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useApp } from '../contexts/AppContext';
 
 interface Fish {
-    id: number;
+
     name: string;
     container: 'source' | 'destination';
 }
@@ -13,6 +13,7 @@ interface DragOffset {
 }
 
 const DraggableFish: React.FC = () => {
+    const {stats } = useApp();
     // State to track all fish and their containers
     const [fishes, setFishes] = useState<Fish[]>([
         { id: 1, name: '🐠 Clownfish', container: 'source' },
